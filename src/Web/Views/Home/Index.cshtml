@@ -1,0 +1,16 @@
+﻿@using ApplicationCore.Entities
+@using ApplicationCore.Interfaces
+
+@inject IRepository<Product> productRepo
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+@foreach(var item in await productRepo.GetAllAsync()){
+    <li class="mb-5">
+        <img src="~/img/product/@item.PictureUri" alt="Fotograf Bulunamadı" width="100px" />
+        @item.Name
+    </li>
+}
