@@ -1,8 +1,10 @@
 global using ApplicationCore.Interfaces;
-using Infrastructure.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Web.Data;
+global using Infrastructure.Data;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.EntityFrameworkCore;
+global using Infrastructure.Identity;
+//global using ApplicationCore.Constants;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,15 +12,10 @@ builder.Services.AddDbContext<QuartzContext>(options => options.UseNpgsql(builde
 builder.Services.AddDbContext<AppIdentityDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("AppIdentityDbContext")));
 
 //// Add services to the container.
-//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//    options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-
-
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppIdentityDbContext>();
 builder.Services.AddControllersWithViews();
 
@@ -41,11 +38,8 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -56,6 +50,12 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<QuartzContext>();
     await QuartzContextSeed.SeedAsync(context);
+
+
+    var appIdentityDbContext = scope.ServiceProvider.GetRequiredService<AppIdentityDbContext>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    await AppIdentityDbContextSeed.SeedAsync(appIdentityDbContext, roleManager, userManager);
 }
 
-    app.Run();
+app.Run();

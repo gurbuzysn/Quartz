@@ -18,6 +18,12 @@
 
 ```
 	Add-Migration InitialCreate -Context QuartzContext -OutputDir Data/Migrations
+	Update-Database -Context QuartzContext
+```
+
+```
+	Add-Migration InitialIdentity -Context AppIdentityDbContext -OutputDir Identity/Migrations
+	Update-Database -Context AppIdentityDbContext
 ```
 
 
