@@ -3,8 +3,9 @@ global using Infrastructure.Data;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.EntityFrameworkCore;
 global using Infrastructure.Identity;
-//global using ApplicationCore.Constants;
-
+global using ApplicationCore.Entities;
+using Web.Interfaces;
+using Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped<IHomeViewModelService, HomeViewModelService>();
 
 
 var app = builder.Build();

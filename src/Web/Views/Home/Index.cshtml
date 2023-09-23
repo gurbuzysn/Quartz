@@ -1,16 +1,48 @@
-﻿@using ApplicationCore.Entities
-@using ApplicationCore.Interfaces
-
-@inject IRepository<Product> productRepo
+﻿@model HomeViewModel
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
+<h1>Products</h1>
 
-@foreach(var item in await productRepo.GetAllAsync()){
-    <li class="mb-5">
-        <img src="~/img/product/@item.PictureUri" alt="Fotograf Bulunamadı" width="100px" />
-        @item.Name
-    </li>
-}
+
+<div class="row">
+    @foreach (var item in Model.Products)
+    {
+        <div class="col-md-4 mb-5">
+            <div class="product-image">
+                <img src="~/img/product/@item.PictureUri" alt="No Image" class="w-100"></img>
+            </div>
+            <div class="product-name">
+                @item.Name
+            </div>
+            <div>
+                @item.Price.ToString("c2")
+            </div>
+        </div>
+
+    }
+</div>
+
+
+
+@*
+<div class="row">
+    @foreach (var product in Model.Products)
+    {
+
+            <div class="col-md-4 mb-4">
+                <div class="product-image">
+                <img src="~/img/product/@product.PictureUri" alt="No Image" class="w-100" />
+                </div>
+                <div class="product-name">
+                    @product.Name
+                </div>
+                <div>
+                    @product.Price.ToString("c2");
+                </div>
+            </div>
+
+    }
+</div> *@
