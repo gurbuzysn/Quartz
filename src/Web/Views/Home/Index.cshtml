@@ -4,45 +4,33 @@
     ViewData["Title"] = "Home Page";
 }
 
-<h1>Products</h1>
 
+<h1>Products</h1>
 
 <div class="row">
     @foreach (var item in Model.Products)
     {
-        <div class="col-md-4 mb-5">
-            <div class="product-image">
-                <img src="~/img/product/@item.PictureUri" alt="No Image" class="w-100"></img>
-            </div>
-            <div class="product-name">
-                @item.Name
-            </div>
-            <div>
-                @item.Price.ToString("c2")
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="product-container border shadow">
+
+                <div class="product-image">
+                    <img src="~/img/product/@item.PictureUri" alt="@item.Name" class="w-100"/>
+                </div>
+
+                <div class="product-name my-2 h6 d-flex justify-content-center" title="@item.Name">
+                    @item.Name
+                </div>
+
+                <div class="product-price d-flex justify-content-between align-items-center m-3">
+                    @item.Price.ToString("c2")
+                    <a href="#" class="btn btn-sm btn-success">
+                        <i class="fa-solid fa-cart-plus"></i>
+                    </a>
+                </div>
+
             </div>
         </div>
-
     }
 </div>
 
 
-
-@*
-<div class="row">
-    @foreach (var product in Model.Products)
-    {
-
-            <div class="col-md-4 mb-4">
-                <div class="product-image">
-                <img src="~/img/product/@product.PictureUri" alt="No Image" class="w-100" />
-                </div>
-                <div class="product-name">
-                    @product.Name
-                </div>
-                <div>
-                    @product.Price.ToString("c2");
-                </div>
-            </div>
-
-    }
-</div> *@
